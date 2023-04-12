@@ -11,11 +11,23 @@ def stats():
     return final
 
 
+def start_game():
+    player_name=input("What is your character's name? ")
+    player_stats={}
+    stat_types=["Strength","Dexterity","Constitution","Intelligence","Wisdom","Charisma"]
+    num_choices=stats()
 
-player_name=input("What is your character's name?")
-player_stats={}
-stat_types=["Strength","Dexterity","Constitution","Intelligence","Wisdom","Charisma"]
-num_choices=stats()
-
-for item in stat_types:
-    print(item)
+    for item in stat_types:
+        print_nums=""
+        for nums in num_choices:
+            print_nums+=str(nums)+" "
+        print(print_nums)
+        while True:
+            selected_num=int(input("Type which number you would like to apply to "+item+": "))
+            if selected_num in num_choices:
+                num_choices.remove(selected_num)
+                player_stats[item]=selected_num
+                break
+            else:
+                print("That number is not available.")
+    print(player_stats)
