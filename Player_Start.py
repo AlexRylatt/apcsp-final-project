@@ -30,4 +30,4 @@ def start_game():
                 break
             else:
                 print("That number is not available.")
-    print(player_stats)
+    return[player_name, player_stats]
