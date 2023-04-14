@@ -32,8 +32,8 @@ bosses={
     "Count Borislav IV":[30,10,20,15,20, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
     }
 
-def battle():
-    foe, stats = random.choice(list(enemies.items()))
+def battle(foe_list):
+    foe, stats = random.choice(list(foe_list.items()))
     fp.f_print("You come across a "+foe+".")
     fp.f_print(stats[-1])
     hp=current_hp
@@ -122,6 +122,18 @@ def reset_stats():
     base_hp=(player_lvl+hp_bonus)*2
     current_hp=base_hp
 
+def encounters():
+    odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
+    encounter_selected=random.choice(odds)
+    if encounter_selected=="basic":
+        battle(enemies)
+    elif encounter_selected=="boss":
+        battle(bosses)
+        chance_of_boss=-1
+    elif encounter_selected=="loot":
+        print("Loot found")
+        chance_of_loot=-1
+
 player_info=ps.start_game()
 player_lvl=1
 player_name=player_info[0]
@@ -139,4 +151,9 @@ base_mdef=10+player_lvl+matk_bonus
 base_hp=(player_lvl+hp_bonus)*2
 current_hp=base_hp
 
-battle()
+chance_of_loot=0
+chance_of_boss=0
+while True:
+    encounters()
+    chance_of_loot+=2
+    chance_of_boss+=1
