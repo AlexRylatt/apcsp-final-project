@@ -5,7 +5,7 @@ def stats():
         results=[]
         for i in range(4):
             num=random.randint(1,6)
-            results.append(num)
+            results.append((num-10)%2)
         results.remove(min(results))
         final.append(sum(results))
     return final
@@ -14,7 +14,7 @@ def stats():
 def start_game():
     player_name=input("What is your character's name? ")
     player_stats={}
-    stat_types=["Strength","Dexterity","Constitution","Intelligence","Wisdom","Charisma"]
+    stat_types=["Attack","Defense","Health","Magic Attack","Magic Defense","Hit Chance"]
     num_choices=stats()
 
     for item in stat_types:
