@@ -1,4 +1,5 @@
 import random
+import fancy_print as fp
 def stats():
     final=[]
     for i in range(6):
@@ -12,22 +13,24 @@ def stats():
 
 
 def start_game():
-    player_name=input("What is your character's name? ")
+    fp.f_print("What is your character's name? ")
+    player_name=input("")
     player_stats={}
-    stat_types=["Attack","Defense","Health","Magic Attack","Magic Defense","Hit Chance"]
+    stat_types=["Attack","Defence","Health","Magic Attack","Magic Defence","Hit Chance"]
     num_choices=stats()
 
     for item in stat_types:
         print_nums=""
         for nums in num_choices:
             print_nums+=str(nums)+" "
-        print(print_nums)
+        fp.f_print(print_nums)
         while True:
-            selected_num=int(input("Type which number you would like to apply to "+item+": "))
+            fp.f_print("Type which number you would like to use as a bonus to "+item+": ")
+            selected_num=int(input(""))
             if selected_num in num_choices:
                 num_choices.remove(selected_num)
                 player_stats[item]=selected_num
                 break
             else:
-                print("That number is not available.")
+                fp.f_print("That number is not available.")
     return[player_name, player_stats]
