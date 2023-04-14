@@ -1,13 +1,21 @@
+"""
+To do:
+Implement inventory
+Implement potions
+Add leveling
+Balance weapons, armor, and enemies
+Leveled enemies?
+Add more enemies and bosses
+"""
+
 import Player_Start as ps
 import random
 import fancy_print as fp
 #"Enemy name":[HP,atk_dmg,mgk_dmg,atk_def,mgk_def,desc]
 enemies={
-    #"Gilgamesh the Banished":[38,22,6,22,12, "Gilgamesh the Banished, a betrayed ruler of a mighty kingdom within the valley of Tholyr. Betrayed by his council of trusted Whal-Marth Artisans, Gilgamesh had been planned on storming an orphanage."],
     "Jeremy the Dude Guy":[8,4,34,4,3, "Jeremy the Dude Guy, a fine upstanding citizen that spends his time watching Wharfball and drinking mead."],
     "Dire Iyasen":[1,1,1,1,1, "A creature of common myth, the Dire Iyasen is found within the Forest of Magnitude, and looks like a deformed koala."],
     "Flying Turtle":[12,3,14,18,20, "The Flying Turtle has been questioned by all great philosophers, though it simply flies because it chooses to. This heretic of physics lies within the Desert of Direction."],
-    #"Bartholomew the Fell":[52,28,12,34,10, "A fallen paladin, Bartholomew the Fell was cast down by the archangels in response to his crippling alcoholism."],
     "Tree Octopus":[2,2,2,2,2, "The 3 hearted beast that swings from tree to tree, resides in the Forest of Magnitude."],
     "8-Legged Ant":[4,2,2,4,4, "Commonly confused with the Unholy Spyder, the 8-legged Ant lives in colonies of upward to 800 others. Beware of the mounds."],
     "Unsalted Butterfly":[42,10,32,8,22, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
@@ -32,6 +40,18 @@ bosses={
     "Count Borislav IV":[30,10,20,15,20, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
     }
 
+
+#Inventory
+armor_bank={"Leather Armor":[1,1],"Studded Leather Armor":[3,3],"Chainmail Armor":[6,5],"Iron Armor":[7,7],"Steel Armor":[9,7],"Wizard Cloak":[2,13],"Mithril":[10,14]}
+#weapons_bank=[["Stick",1,0],["Wooden Sword",2,0],["Plastic Lightsaber",1,12],["Morning Star",4,0],["Blessed Chancla",5,5],["Crossbow",8,0],["Inferno Staff",1,15],["Mithril Longsword",20,22],["Iron Shortsword",7,0],["Holy Warhammer",17,5]]
+weapons_bank={"Big Stick":[0,0],"Iron Sword":[3,0],"Plastic Lightsaber":[1,6],"Morning Star":[4,0],"Crossbow":[6,0],"Inferno Staff":[1,7],"Mithrill Broadsword":[12,14],"Holy Hand Grenade of Antioch":[0,20]}
+potions_bank={"Health Potion I":4,"Health Potion II":8,"Health Potion III":16}
+player_armors=[]
+player_weapons=[]
+player_potions=[potions_bank["Health Potion I"]]
+equip_armor=armor_bank["Leather Armor"]
+equip_weapon=weapons_bank["Big Stick"]
+
 def battle(foe_list):
     foe, stats = random.choice(list(foe_list.items()))
     fp.f_print("You come across a "+foe+".")
@@ -44,6 +64,7 @@ def battle(foe_list):
         #Player turn
         if turn:
             fp.f_print(player_name+"'s turn:")
+            fp.f_print("You have "+str(hp)+" hit points remaining.")
             fp.f_print("Choose an action: Attack, Magic Attack, Block, Potion")
             action=input("")
 
@@ -51,8 +72,8 @@ def battle(foe_list):
                 roll=random.randint(1,20)+hit_bonus
                 if roll>=stats[3]+enemy_block_bonus:
                     fp.f_print("Hit!")
-                    fp.f_print("Deals "+str(base_atk)+" damage.")
-                    stats[0]-=base_atk
+                    fp.f_print("Deals "+str(base_atk+equip_weapon[0])+" damage.")
+                    stats[0]-=base_atk+equip_weapon[0]
                 else:
                     fp.f_print("Miss!")
 
@@ -60,8 +81,8 @@ def battle(foe_list):
                 roll=random.randint(1,20)+hit_bonus
                 if roll>=stats[4]+enemy_block_bonus:
                     fp.f_print("Hit!")
-                    fp.f_print("Deals "+str(base_matk)+" damage.")
-                    stats[0]-=base_matk
+                    fp.f_print("Deals "+str(base_matk+equip_weapon[1])+" damage.")
+                    stats[0]-=base_matk+equip_weapon[1]
                 else:
                     fp.f_print("Miss!")
 
@@ -87,7 +108,7 @@ def battle(foe_list):
             if enemy_action=="a":
                 print(foe+" attacks.")
                 roll=random.randint(1,20)
-                if roll>=base_def+block_bonus:
+                if roll>=base_def+block_bonus+equip_armor[0]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[1])+" damage.")
                     hp-=stats[1]
@@ -97,7 +118,7 @@ def battle(foe_list):
             elif enemy_action=="ma":
                 print(foe+" attacks with magic.")
                 roll=random.randint(1,20)
-                if roll>=base_mdef+block_bonus:
+                if roll>=base_mdef+block_bonus+equip_armor[1]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[2])+" damage.")
                     hp-=stats[2]
@@ -113,6 +134,7 @@ def battle(foe_list):
             if hp<=0:
                 fp.f_print(player_name+" died")
                 quit()
+    return hp
 
 def reset_stats():
     base_atk=player_lvl+atk_bonus
@@ -121,7 +143,7 @@ def reset_stats():
     base_mdef=10+player_lvl+matk_bonus
     base_hp=(player_lvl+hp_bonus)*2
     current_hp=base_hp
-
+"""
 def encounters():
     odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
     encounter_selected=random.choice(odds)
@@ -133,7 +155,7 @@ def encounters():
     elif encounter_selected=="loot":
         print("Loot found")
         chance_of_loot=-1
-
+"""
 player_info=ps.start_game()
 player_lvl=1
 player_name=player_info[0]
@@ -151,9 +173,22 @@ base_mdef=10+player_lvl+matk_bonus
 base_hp=(player_lvl+hp_bonus)*2
 current_hp=base_hp
 
+while True:
+    fp.f_print("Enter an action: Go, Inventory, Potion")
+    action=input("")
+    if action.title()=="Go":
+        current_hp=battle(enemies)
+    elif action.title()=="Inventory":
+        print("open inventory")
+    elif action.title()=="Potion":
+        print("use potion")
+    else:
+        print("Invalid input")
+"""
 chance_of_loot=0
 chance_of_boss=0
 while True:
     encounters()
     chance_of_loot+=2
     chance_of_boss+=1
+"""
