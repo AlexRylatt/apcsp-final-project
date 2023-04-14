@@ -48,9 +48,9 @@ weapons_bank={"Big Stick":[0,0],"Iron Sword":[3,0],"Plastic Lightsaber":[1,6],"M
 potions_bank={"Health Potion I":4,"Health Potion II":8,"Health Potion III":16}
 player_armors=[]
 player_weapons=[]
-player_potions=[potions_bank["Health Potion I"]]
-equip_armor=armor_bank["Leather Armor"]
-equip_weapon=weapons_bank["Big Stick"]
+player_potions=[["Health Potion I",4]]
+equip_armor=["Leather Armor",armor_bank["Leather Armor"]]
+equip_weapon=["Big Stick",weapons_bank["Big Stick"]]
 
 def battle(foe_list):
     foe, stats = random.choice(list(foe_list.items()))
@@ -143,6 +143,43 @@ def reset_stats():
     base_mdef=10+player_lvl+matk_bonus
     base_hp=(player_lvl+hp_bonus)*2
     current_hp=base_hp
+
+#
+#Something isn't working here, needs to be fixed
+#
+#
+def open_inventory():
+    fp.f_print("Current armor equipped: "+equip_armor[0])
+    fp.f_print("Current weapon equipped: "+equip_weapon[0])
+    fp.f_print("Armor owned:")
+    for item in player_armors:
+        print(item[0])
+    fp.f_print("Weapons owned:")
+    for item in player_weapons:
+        print(item[0])
+    fp.f_print("Potions owned:")
+    for item in player_potions:
+        print(item[0])
+    fp.f_print("Select an action: Back, Unequip Armor, Unequip Weapon, Equip Armor, Equip Weapon")
+    action=input("")
+    if action=="Unequip Armor":
+        if equip_armor[0]=="None":
+            fp.f_print("Not wearing armor.")
+        else:
+            player_armors.append([equip_armor[0],equip_armor[1]])
+            equip_armor=["None",0,0]
+            fp.f_print("Armor unequiped.")
+    elif action=="Unequip Weapon":
+        if equip_weapon[0]=="None":
+            fp.f_print("Not wielding a weapon.")
+        else:
+            player_weapons.append([equip_armor[0],equip_armor[1]])
+            equip_weapon=["None",0,0]
+            fp.f_print("Weapon unequiped.")
+    elif action=="Equip Armor":
+        print("Unequip armor")
+    elif action=="Equip Weapon":
+        print("Unequip armor")
 """
 def encounters():
     odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
@@ -179,7 +216,7 @@ while True:
     if action.title()=="Go":
         current_hp=battle(enemies)
     elif action.title()=="Inventory":
-        print("open inventory")
+        open_inventory()
     elif action.title()=="Potion":
         print("use potion")
     else:
