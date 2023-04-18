@@ -56,7 +56,7 @@ def battle(foe_list):
     foe, stats = random.choice(list(foe_list.items()))
     fp.f_print("You come across a "+foe+".")
     fp.f_print(stats[-1])
-    hp=current_hp
+    global current_hp
     block_bonus=0
     enemy_block_bonus=0
     turn=True
@@ -64,34 +64,38 @@ def battle(foe_list):
         #Player turn
         if turn:
             fp.f_print(player_name+"'s turn:")
-            fp.f_print("You have "+str(hp)+" hit points remaining.")
+            fp.f_print("You have "+str(current_hp)+" hit points remaining.")
             fp.f_print("Choose an action: Attack, Magic Attack, Block, Potion")
             action=input("")
 
-            if action.title()=="Attack":
-                roll=random.randint(1,20)+hit_bonus
-                if roll>=stats[3]+enemy_block_bonus:
-                    fp.f_print("Hit!")
-                    fp.f_print("Deals "+str(base_atk+equip_weapon[0])+" damage.")
-                    stats[0]-=base_atk+equip_weapon[0]
+            while True:
+                if action.title()=="Attack":
+                    roll=random.randint(1,20)+hit_bonus
+                    if roll>=stats[3]+enemy_block_bonus:
+                        fp.f_print("Hit!")
+                        fp.f_print("Deals "+str(base_atk+equip_weapon[0])+" damage.")
+                        stats[0]-=base_atk+equip_weapon[0]
+                    else:
+                        fp.f_print("Miss!")
+
+                elif action.title()=="Magic Attack":
+                    roll=random.randint(1,20)+hit_bonus
+                    if roll>=stats[4]+enemy_block_bonus:
+                        fp.f_print("Hit!")
+                        fp.f_print("Deals "+str(base_matk+equip_weapon[1])+" damage.")
+                        stats[0]-=base_matk+equip_weapon[1]
+                    else:
+                        fp.f_print("Miss!")
+
+                elif action.title()=="Block":
+                    block_bonus=5
+                    fp.f_print("You block, increasing defenses.")
+
+                elif action.title()=="Potion":
+                    use_potion()
+                
                 else:
-                    fp.f_print("Miss!")
-
-            elif action.title()=="Magic Attack":
-                roll=random.randint(1,20)+hit_bonus
-                if roll>=stats[4]+enemy_block_bonus:
-                    fp.f_print("Hit!")
-                    fp.f_print("Deals "+str(base_matk+equip_weapon[1])+" damage.")
-                    stats[0]-=base_matk+equip_weapon[1]
-                else:
-                    fp.f_print("Miss!")
-
-            elif action.title()=="Block":
-                block_bonus=5
-                fp.f_print("You block, increasing defenses.")
-
-            elif action.title()=="Potion":
-                print("potion")
+                    fp.f_print("Invalid input")
 
             turn=False
             enemy_block_bonus=0
@@ -111,7 +115,7 @@ def battle(foe_list):
                 if roll>=base_def+block_bonus+equip_armor[0]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[1])+" damage.")
-                    hp-=stats[1]
+                    current_hp-=stats[1]
                 else:
                     fp.f_print(foe+" misses!")
 
@@ -121,7 +125,7 @@ def battle(foe_list):
                 if roll>=base_mdef+block_bonus+equip_armor[1]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[2])+" damage.")
-                    hp-=stats[2]
+                    current_hp-=stats[2]
                 else:
                     fp.f_print(foe+" misses!")
 
@@ -131,10 +135,9 @@ def battle(foe_list):
 
             turn=True
             block_bonus=0
-            if hp<=0:
+            if current_hp<=0:
                 fp.f_print(player_name+" died")
                 quit()
-    return hp
 
 def reset_stats():
     base_atk=player_lvl+atk_bonus
@@ -215,6 +218,25 @@ def open_inventory():
                 fp.f_print("Weapon not in inventory")
         else:
             fp.f_print("Already wielding weapon")
+
+
+def use_potion():
+    global current_hp
+    fp.f_print("Select a potion to use")
+    selection=input("").title()
+    p_potions_names=[names[0] for names in player_potions]
+    if selection in p_potions_names:
+        current_hp+=potions_bank[selection]
+        if current_hp>base_hp:
+            current_hp=current_hp
+        for item in player_potions:
+                    if item[0]==selection:
+                        player_potions.remove(item)
+                        break
+        fp.f_print("Used "+selection)
+    else:
+        fp.f_print("Invalid input")
+
 """
 def encounters():
     odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
@@ -244,16 +266,16 @@ base_def=10+player_lvl+atk_bonus
 base_mdef=10+player_lvl+matk_bonus
 base_hp=(player_lvl+hp_bonus)*2
 current_hp=base_hp
-
+current_hp=1
 while True:
     fp.f_print("Enter an action: Go, Inventory, Potion")
     action=input("")
     if action.title()=="Go":
-        current_hp=battle(enemies)
+        battle(enemies)
     elif action.title()=="Inventory":
         open_inventory()
     elif action.title()=="Potion":
-        print("use potion")
+        use_potion()
     else:
         print("Invalid input")
 """
