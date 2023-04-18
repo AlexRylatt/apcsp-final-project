@@ -149,6 +149,7 @@ def reset_stats():
 #
 #
 def open_inventory():
+    global equip_armor, equip_weapon
     fp.f_print("Current armor equipped: "+equip_armor[0])
     fp.f_print("Current weapon equipped: "+equip_weapon[0])
     fp.f_print("Armor owned:")
@@ -161,7 +162,8 @@ def open_inventory():
     for item in player_potions:
         print(item[0])
     fp.f_print("Select an action: Back, Unequip Armor, Unequip Weapon, Equip Armor, Equip Weapon")
-    action=input("")
+    action=input("").title()
+
     if action=="Unequip Armor":
         if equip_armor[0]=="None":
             fp.f_print("Not wearing armor.")
@@ -169,17 +171,50 @@ def open_inventory():
             player_armors.append([equip_armor[0],equip_armor[1]])
             equip_armor=["None",0,0]
             fp.f_print("Armor unequiped.")
+
     elif action=="Unequip Weapon":
         if equip_weapon[0]=="None":
             fp.f_print("Not wielding a weapon.")
         else:
-            player_weapons.append([equip_armor[0],equip_armor[1]])
+            player_weapons.append([equip_weapon[0],equip_weapon[1]])
             equip_weapon=["None",0,0]
             fp.f_print("Weapon unequiped.")
+
     elif action=="Equip Armor":
-        print("Unequip armor")
+        if equip_armor[0]=="None":
+            fp.f_print("Enter which armor you would like to equip")
+            equiping=input("").title()
+            armor_names = [names[0] for names in player_armors]
+            if equiping in armor_names:
+                equip_armor[0]=equiping
+                equip_armor[1]=armor_bank[equiping]
+                for item in player_armors:
+                    if item[0]==equiping:
+                        player_armors.remove(item)
+                        break
+                fp.f_print("Equiped "+equiping)
+            else:
+                fp.f_print("Armor not in inventory")
+        else:
+            fp.f_print("Already wearing armor")
+
     elif action=="Equip Weapon":
-        print("Unequip armor")
+        if equip_weapon[0]=="None":
+            fp.f_print("Enter which weapon you would like to equip")
+            equiping=input("").title()
+            weapon_names = [names[0] for names in player_weapons]
+            if equiping in weapon_names:
+                equip_armor[0]=equiping
+                equip_weapon[1]=weapons_bank[equiping]
+                for item in player_weapons:
+                    if item[0]==equiping:
+                        player_weapons.remove(item)
+                        break
+                fp.f_print("Equiped "+equiping)
+            else:
+                fp.f_print("Weapon not in inventory")
+        else:
+            fp.f_print("Already wielding weapon")
 """
 def encounters():
     odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
