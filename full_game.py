@@ -1,11 +1,9 @@
 """
 To do:
-Implement inventory
-Implement potions
+Fix repeat enemies not healing
+Loot not working
 Add leveling
-Balance weapons, armor, and enemies
-Leveled enemies?
-Add more enemies and bosses
+Balance enemies
 """
 
 import Player_Start as ps
@@ -54,9 +52,12 @@ equip_weapon=["Big Stick",weapons_bank["Big Stick"]]
 
 def battle(foe_list):
     foe, stats = random.choice(list(foe_list.items()))
+    encounter_enemy=[foe,stats]
+    foe=encounter_enemy[0]
+    stats=encounter_enemy[1]
     fp.f_print("You come across a "+foe+".")
     fp.f_print(stats[-1])
-    global current_hp
+    hp=current_hp
     block_bonus=0
     enemy_block_bonus=0
     turn=True
@@ -64,35 +65,39 @@ def battle(foe_list):
         #Player turn
         if turn:
             fp.f_print(player_name+"'s turn:")
-            fp.f_print("You have "+str(current_hp)+" hit points remaining.")
+            fp.f_print("You have "+str(hp)+" hit points remaining.")
             fp.f_print("Choose an action: Attack, Magic Attack, Block, Potion")
-            action=input("")
 
             while True:
+                action=input("")
                 if action.title()=="Attack":
                     roll=random.randint(1,20)+hit_bonus
                     if roll>=stats[3]+enemy_block_bonus:
                         fp.f_print("Hit!")
-                        fp.f_print("Deals "+str(base_atk+equip_weapon[0])+" damage.")
-                        stats[0]-=base_atk+equip_weapon[0]
+                        fp.f_print("Deals "+str(base_atk+equip_weapon[1][0])+" damage.")
+                        stats[0]-=base_atk+equip_weapon[1][0]
                     else:
                         fp.f_print("Miss!")
+                    break
 
                 elif action.title()=="Magic Attack":
                     roll=random.randint(1,20)+hit_bonus
                     if roll>=stats[4]+enemy_block_bonus:
                         fp.f_print("Hit!")
-                        fp.f_print("Deals "+str(base_matk+equip_weapon[1])+" damage.")
-                        stats[0]-=base_matk+equip_weapon[1]
+                        fp.f_print("Deals "+str(base_matk+equip_weapon[1][1])+" damage.")
+                        stats[0]-=base_matk+equip_weapon[1][1]
                     else:
                         fp.f_print("Miss!")
+                    break
 
                 elif action.title()=="Block":
                     block_bonus=5
                     fp.f_print("You block, increasing defenses.")
+                    break
 
                 elif action.title()=="Potion":
                     use_potion()
+                    break
                 
                 else:
                     fp.f_print("Invalid input")
@@ -101,6 +106,7 @@ def battle(foe_list):
             enemy_block_bonus=0
             if stats[0]<=0:
                 fp.f_print(foe+" died!")
+                return hp
                 break
         
 
@@ -112,20 +118,20 @@ def battle(foe_list):
             if enemy_action=="a":
                 print(foe+" attacks.")
                 roll=random.randint(1,20)
-                if roll>=base_def+block_bonus+equip_armor[0]:
+                if roll>=base_def+block_bonus+equip_armor[1][0]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[1])+" damage.")
-                    current_hp-=stats[1]
+                    hp-=stats[1]
                 else:
                     fp.f_print(foe+" misses!")
 
             elif enemy_action=="ma":
                 print(foe+" attacks with magic.")
                 roll=random.randint(1,20)
-                if roll>=base_mdef+block_bonus+equip_armor[1]:
+                if roll>=base_mdef+block_bonus+equip_armor[1][1]:
                     fp.f_print(foe+" hits!")
                     fp.f_print("Deals "+str(stats[2])+" damage.")
-                    current_hp-=stats[2]
+                    hp-=stats[2]
                 else:
                     fp.f_print(foe+" misses!")
 
@@ -135,7 +141,7 @@ def battle(foe_list):
 
             turn=True
             block_bonus=0
-            if current_hp<=0:
+            if hp<=0:
                 fp.f_print(player_name+" died")
                 quit()
 
@@ -147,10 +153,7 @@ def reset_stats():
     base_hp=(player_lvl+hp_bonus)*2
     current_hp=base_hp
 
-#
-#Something isn't working here, needs to be fixed
-#
-#
+
 def open_inventory():
     global equip_armor, equip_weapon
     fp.f_print("Current armor equipped: "+equip_armor[0])
@@ -237,19 +240,41 @@ def use_potion():
     else:
         fp.f_print("Invalid input")
 
-"""
+def roll_loot():
+    loot_roll=random.choice(("p","p","p","w","a"))
+    if loot_roll=="p":
+        random_potion=random.choice(potions_bank.keys())
+        player_potions.append([random_potion,potions_bank[random_potion]])
+        fp.f_print("You got "+random_potion)
+    elif loot_roll=="w":
+        random_weapon=random.choice(weapons_bank.keys())
+        player_weapons.append([random_weapon,weapons_bank[random_weapon]])
+        fp.f_print("You got "+random_weapon)
+    elif loot_roll=="a":
+        random_armor=random.choice(armor_bank.keys())
+        player_armors.append([random_armor,armor_bank[random_armor]])
+        fp.f_print("You got "+random_armor)
+    
+
 def encounters():
-    odds=["basic"]*50+["boss"]*chance_of_boss+["loot"]*chance_of_loot
+    global chance_of_boss
+    global chance_of_loot
+    odds=["basic"]*25+["boss"]*chance_of_boss+["loot"]*chance_of_loot+["healing"]*5
     encounter_selected=random.choice(odds)
+    hp=current_hp
     if encounter_selected=="basic":
-        battle(enemies)
+        hp=battle(enemies)
     elif encounter_selected=="boss":
-        battle(bosses)
+        hp=battle(bosses)
         chance_of_boss=-1
     elif encounter_selected=="loot":
-        print("Loot found")
+        roll_loot()
         chance_of_loot=-1
-"""
+    elif encounter_selected=="healing":
+        fp.f_print("You come across a room you can heal in. Health restored to full.")
+        return base_hp
+    return hp
+
 player_info=ps.start_game()
 player_lvl=1
 player_name=player_info[0]
@@ -266,23 +291,20 @@ base_def=10+player_lvl+atk_bonus
 base_mdef=10+player_lvl+matk_bonus
 base_hp=(player_lvl+hp_bonus)*2
 current_hp=base_hp
-current_hp=1
+
+chance_of_loot=0
+chance_of_boss=0
+
 while True:
     fp.f_print("Enter an action: Go, Inventory, Potion")
     action=input("")
     if action.title()=="Go":
-        battle(enemies)
+        current_hp=encounters()
+        chance_of_loot+=2
+        chance_of_boss+=1
     elif action.title()=="Inventory":
         open_inventory()
     elif action.title()=="Potion":
         use_potion()
     else:
         print("Invalid input")
-"""
-chance_of_loot=0
-chance_of_boss=0
-while True:
-    encounters()
-    chance_of_loot+=2
-    chance_of_boss+=1
-"""
