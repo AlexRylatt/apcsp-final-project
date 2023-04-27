@@ -1,41 +1,40 @@
 """
 To do:
-Fix repeat enemies not healing
-Loot not working
-Add leveling
+Give enemies proper xp values
 Balance enemies
+Maybe add leveling for enemies? New retreat feature makes this less of an issue
 """
 
 import Player_Start as ps
 import random
 import fancy_print as fp
-#"Enemy name":[HP,atk_dmg,mgk_dmg,atk_def,mgk_def,desc]
+#"Enemy name":[HP,atk_dmg,mgk_dmg,atk_def,mgk_def,exp,desc]
 enemies={
-    "Jeremy the Dude Guy":[8,4,34,4,3, "Jeremy the Dude Guy, a fine upstanding citizen that spends his time watching Wharfball and drinking mead."],
-    "Dire Iyasen":[1,1,1,1,1, "A creature of common myth, the Dire Iyasen is found within the Forest of Magnitude, and looks like a deformed koala."],
-    "Flying Turtle":[12,3,14,18,20, "The Flying Turtle has been questioned by all great philosophers, though it simply flies because it chooses to. This heretic of physics lies within the Desert of Direction."],
-    "Tree Octopus":[2,2,2,2,2, "The 3 hearted beast that swings from tree to tree, resides in the Forest of Magnitude."],
-    "8-Legged Ant":[4,2,2,4,4, "Commonly confused with the Unholy Spyder, the 8-legged Ant lives in colonies of upward to 800 others. Beware of the mounds."],
-    "Unsalted Butterfly":[42,10,32,8,22, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
-    "Hellbender":[25,12,20,14,16, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
-    "Leaf Crawler":[2,4,4,2,2, "It's not a leaf."],
-    "Grass Gobbler":[4,2,2,4,4, "This son of a gun not only eats grass, but it gobbles it. Similar to it's cousin, the cow, but it is cooler."],
-    "Sussy Giraffe":[12,6,6,8,8, "Created by the famous alchemist Jonathon Mock, this sussy giraffe eats beings among the treetops."],
-    "Pitbull: Angel":[6,24,3,6,6, "\"God gives his tastiest children to the hungriest of pitbulls.\" Beware of this \"friendly\" dog."],
-    "Stick With Legs":[8,1,9,2,2, "It's a stick, but with legs... Use your imagination. Pick it up."],
-    "Troll":[21,24,4,18,5, "This large and unwiedly beast sits dormant underneath shelter until provoked otherwise. DO NOT WAKE."],
-    "Thief":[8,5,2,3,4, "A pickpocketer of towns and populated areas may steal your belongings without you realising. When confronted, may be strapped."],
-    "Ginger":[15,14,4,10,2, "A freckeled and pasty skinned beast, the ginger is a creature grown from roots that later sprouts from the ground to begin its life."],
-    "Desert Crab":[12,4,2,14,13, "Crab, but in the desert."],
-    "Unholy Spyder":[2,4,4,2,2, "This 8 legged spyder is often confused with the 8-legged Ant, except God hates this one."]
+    "Jeremy the Dude Guy":[8,4,34,4,3,100, "Jeremy the Dude Guy, a fine upstanding citizen that spends his time watching Wharfball and drinking mead."],
+    "Dire Iyasen":[1,1,1,1,1,100, "A creature of common myth, the Dire Iyasen is found within the Forest of Magnitude, and looks like a deformed koala."],
+    "Flying Turtle":[12,3,14,18,20,100, "The Flying Turtle has been questioned by all great philosophers, though it simply flies because it chooses to. This heretic of physics lies within the Desert of Direction."],
+    "Tree Octopus":[2,2,2,2,2,100, "The 3 hearted beast that swings from tree to tree, resides in the Forest of Magnitude."],
+    "8-Legged Ant":[4,2,2,4,4,100, "Commonly confused with the Unholy Spyder, the 8-legged Ant lives in colonies of upward to 800 others. Beware of the mounds."],
+    "Unsalted Butterfly":[42,10,32,8,22,100, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
+    "Hellbender":[25,12,20,14,16,100, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
+    "Leaf Crawler":[2,4,4,2,2,100, "It's not a leaf."],
+    "Grass Gobbler":[4,2,2,4,4,100, "This son of a gun not only eats grass, but it gobbles it. Similar to it's cousin, the cow, but it is cooler."],
+    "Sussy Giraffe":[12,6,6,8,8,100, "Created by the famous alchemist Jonathon Mock, this sussy giraffe eats beings among the treetops."],
+    "Pitbull: Angel":[6,24,3,6,6,100, "\"God gives his tastiest children to the hungriest of pitbulls.\" Beware of this \"friendly\" dog."],
+    "Stick With Legs":[8,1,9,2,2,100, "It's a stick, but with legs... Use your imagination. Pick it up."],
+    "Troll":[21,24,4,18,5,100, "This large and unwiedly beast sits dormant underneath shelter until provoked otherwise. DO NOT WAKE."],
+    "Thief":[8,5,2,3,4,100, "A pickpocketer of towns and populated areas may steal your belongings without you realising. When confronted, may be strapped."],
+    "Ginger":[15,14,4,10,2,100, "A freckeled and pasty skinned beast, the ginger is a creature grown from roots that later sprouts from the ground to begin its life."],
+    "Desert Crab":[12,4,2,14,13,100, "Crab, but in the desert."],
+    "Unholy Spyder":[2,4,4,2,2,100, "This 8 legged spyder is often confused with the 8-legged Ant, except God hates this one."]
     }
 
 bosses={
-    "Gilgamesh the Banished":[38,22,6,22,12, "Gilgamesh the Banished, a betrayed ruler of a mighty kingdom within the valley of Tholyr. Betrayed by his council of trusted Whal-Marth Artisans, Gilgamesh had been planned on storming an orphanage."], 
-    "Unsalted Butterfly":[42,10,32,8,22, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
-    "Hellbender":[25,12,20,14,16, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
-    "Bartholomew the Fell":[52,28,12,34,10, "A fallen paladin, Bartholomew the Fell was cast down by the archangels in response to his crippling alcoholism."],
-    "Count Borislav IV":[30,10,20,15,20, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
+    "Gilgamesh the Banished":[38,22,6,22,12,100, "Gilgamesh the Banished, a betrayed ruler of a mighty kingdom within the valley of Tholyr. Betrayed by his council of trusted Whal-Marth Artisans, Gilgamesh had been planned on storming an orphanage."], 
+    "Unsalted Butterfly":[42,10,32,8,22,100, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
+    "Hellbender":[25,12,20,14,16,100, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
+    "Bartholomew the Fell":[52,28,12,34,10,100, "A fallen paladin, Bartholomew the Fell was cast down by the archangels in response to his crippling alcoholism."],
+    "Count Borislav IV":[30,10,20,15,20,100, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
     }
 
 
@@ -47,12 +46,17 @@ potions_bank={"Health Potion I":4,"Health Potion II":8,"Health Potion III":16}
 player_armors=[]
 player_weapons=[]
 player_potions=[["Health Potion I",4]]
+#This is what the player will start with
 equip_armor=["Leather Armor",armor_bank["Leather Armor"]]
 equip_weapon=["Big Stick",weapons_bank["Big Stick"]]
 
+#This is just debug equipment
+#equip_weapon=["Kill",[100,100]]
+#equip_armor=["No",[100,100]]
+
 def battle(foe_list):
     foe, stats = random.choice(list(foe_list.items()))
-    encounter_enemy=[foe,stats]
+    encounter_enemy=[foe,stats.copy()]
     foe=encounter_enemy[0]
     stats=encounter_enemy[1]
     fp.f_print("You come across a "+foe+".")
@@ -66,7 +70,7 @@ def battle(foe_list):
         if turn:
             fp.f_print(player_name+"'s turn:")
             fp.f_print("You have "+str(hp)+" hit points remaining.")
-            fp.f_print("Choose an action: Attack, Magic Attack, Block, Potion")
+            fp.f_print("Choose an action: Attack, Magic Attack, Block, Potion, Retreat")
 
             while True:
                 action=input("")
@@ -99,15 +103,24 @@ def battle(foe_list):
                     use_potion()
                     break
                 
+                elif action.title()=="Retreat":
+                    roll=random.randint(1,3)
+                    if roll==1:
+                        fp.f_print(player_name+" retreated from the battle.")
+                        return hp,player_exp
+                    else:
+                        fp.f_print(player_name+" was unable to escape.")
+                    break
+                
                 else:
                     fp.f_print("Invalid input")
-
+                
             turn=False
             enemy_block_bonus=0
             if stats[0]<=0:
                 fp.f_print(foe+" died!")
-                return hp
-                break
+                fp.f_print("You gained "+str(stats[-2])+" experience.")
+                return hp, stats[-2]+player_exp
         
 
         #Enemy turn
@@ -144,14 +157,6 @@ def battle(foe_list):
             if hp<=0:
                 fp.f_print(player_name+" died")
                 quit()
-
-def reset_stats():
-    base_atk=player_lvl+atk_bonus
-    base_matk=player_lvl+matk_bonus
-    base_def=10+player_lvl+atk_bonus
-    base_mdef=10+player_lvl+matk_bonus
-    base_hp=(player_lvl+hp_bonus)*2
-    current_hp=base_hp
 
 
 def open_inventory():
@@ -243,15 +248,15 @@ def use_potion():
 def roll_loot():
     loot_roll=random.choice(("p","p","p","w","a"))
     if loot_roll=="p":
-        random_potion=random.choice(potions_bank.keys())
+        random_potion=random.choice(list(potions_bank.keys()))
         player_potions.append([random_potion,potions_bank[random_potion]])
         fp.f_print("You got "+random_potion)
     elif loot_roll=="w":
-        random_weapon=random.choice(weapons_bank.keys())
+        random_weapon=random.choice(list(weapons_bank.keys()))
         player_weapons.append([random_weapon,weapons_bank[random_weapon]])
         fp.f_print("You got "+random_weapon)
     elif loot_roll=="a":
-        random_armor=random.choice(armor_bank.keys())
+        random_armor=random.choice(list(armor_bank.keys()))
         player_armors.append([random_armor,armor_bank[random_armor]])
         fp.f_print("You got "+random_armor)
     
@@ -262,21 +267,23 @@ def encounters():
     odds=["basic"]*25+["boss"]*chance_of_boss+["loot"]*chance_of_loot+["healing"]*5
     encounter_selected=random.choice(odds)
     hp=current_hp
+    exp=player_exp
     if encounter_selected=="basic":
-        hp=battle(enemies)
+        hp,exp=battle(enemies)
     elif encounter_selected=="boss":
-        hp=battle(bosses)
+        hp,exp=battle(bosses)
         chance_of_boss=-1
     elif encounter_selected=="loot":
         roll_loot()
         chance_of_loot=-1
     elif encounter_selected=="healing":
         fp.f_print("You come across a room you can heal in. Health restored to full.")
-        return base_hp
-    return hp
+        return base_hp,exp
+    return hp,exp
 
 player_info=ps.start_game()
 player_lvl=1
+player_exp=0
 player_name=player_info[0]
 atk_bonus=player_info[1]["Attack"]
 def_bonus=player_info[1]["Defence"]
@@ -299,7 +306,7 @@ while True:
     fp.f_print("Enter an action: Go, Inventory, Potion")
     action=input("")
     if action.title()=="Go":
-        current_hp=encounters()
+        current_hp,player_exp=encounters()
         chance_of_loot+=2
         chance_of_boss+=1
     elif action.title()=="Inventory":
@@ -308,3 +315,16 @@ while True:
         use_potion()
     else:
         print("Invalid input")
+    
+    #Level up
+    if player_exp==player_lvl*100:
+        player_exp=0
+        player_lvl+=1
+        #Redo stats
+        base_atk=player_lvl+atk_bonus
+        base_matk=player_lvl+matk_bonus
+        base_def=10+player_lvl+atk_bonus
+        base_mdef=10+player_lvl+matk_bonus
+        base_hp=(player_lvl+hp_bonus)*2
+        current_hp=base_hp
+        fp.f_print(player_name+" leveled up to level "+str(player_lvl))
