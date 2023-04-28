@@ -10,31 +10,31 @@ import random
 import fancy_print as fp
 #"Enemy name":[HP,atk_dmg,mgk_dmg,atk_def,mgk_def,exp,desc]
 enemies={
-    "Jeremy the Dude Guy":[8,4,34,4,3,100, "Jeremy the Dude Guy, a fine upstanding citizen that spends his time watching Wharfball and drinking mead."],
-    "Dire Iyasen":[1,1,1,1,1,100, "A creature of common myth, the Dire Iyasen is found within the Forest of Magnitude, and looks like a deformed koala."],
-    "Flying Turtle":[12,3,14,18,20,100, "The Flying Turtle has been questioned by all great philosophers, though it simply flies because it chooses to. This heretic of physics lies within the Desert of Direction."],
-    "Tree Octopus":[2,2,2,2,2,100, "The 3 hearted beast that swings from tree to tree, resides in the Forest of Magnitude."],
-    "8-Legged Ant":[4,2,2,4,4,100, "Commonly confused with the Unholy Spyder, the 8-legged Ant lives in colonies of upward to 800 others. Beware of the mounds."],
+    "Jeremy the Dude Guy":[8,4,34,4,3,48, "Jeremy the Dude Guy, a fine upstanding citizen that spends his time watching Wharfball and drinking mead."],
+    "Dire Iyasen":[1,1,1,1,1,10, "A creature of common myth, the Dire Iyasen is found within the Forest of Magnitude, and looks like a deformed koala."],
+    "Flying Turtle":[12,3,14,18,20,60, "The Flying Turtle has been questioned by all great philosophers, though it simply flies because it chooses to. This heretic of physics lies within the Desert of Direction."],
+    "Tree Octopus":[2,2,2,2,2,12, "The 3 hearted beast that swings from tree to tree, resides in the Forest of Magnitude."],
+    "8-Legged Ant":[4,2,2,4,4,24, "Commonly confused with the Unholy Spyder, the 8-legged Ant lives in colonies of upward to 800 others. Beware of the mounds."],
     "Unsalted Butterfly":[42,10,32,8,22,100, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
-    "Hellbender":[25,12,20,14,16,100, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
-    "Leaf Crawler":[2,4,4,2,2,100, "It's not a leaf."],
-    "Grass Gobbler":[4,2,2,4,4,100, "This son of a gun not only eats grass, but it gobbles it. Similar to it's cousin, the cow, but it is cooler."],
-    "Sussy Giraffe":[12,6,6,8,8,100, "Created by the famous alchemist Jonathon Mock, this sussy giraffe eats beings among the treetops."],
-    "Pitbull: Angel":[6,24,3,6,6,100, "\"God gives his tastiest children to the hungriest of pitbulls.\" Beware of this \"friendly\" dog."],
-    "Stick With Legs":[8,1,9,2,2,100, "It's a stick, but with legs... Use your imagination. Pick it up."],
-    "Troll":[21,24,4,18,5,100, "This large and unwiedly beast sits dormant underneath shelter until provoked otherwise. DO NOT WAKE."],
-    "Thief":[8,5,2,3,4,100, "A pickpocketer of towns and populated areas may steal your belongings without you realising. When confronted, may be strapped."],
-    "Ginger":[15,14,4,10,2,100, "A freckeled and pasty skinned beast, the ginger is a creature grown from roots that later sprouts from the ground to begin its life."],
-    "Desert Crab":[12,4,2,14,13,100, "Crab, but in the desert."],
-    "Unholy Spyder":[2,4,4,2,2,100, "This 8 legged spyder is often confused with the 8-legged Ant, except God hates this one."]
+    "Hellbender":[25,12,20,14,16,80, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
+    "Leaf Crawler":[2,4,4,2,2,18, "It's not a leaf."],
+    "Grass Gobbler":[4,2,2,4,4,24, "This son of a gun not only eats grass, but it gobbles it. Similar to it's cousin, the cow, but it is cooler."],
+    "Sussy Giraffe":[12,6,6,8,8,52, "Created by the famous alchemist Jonathon Mock, this sussy giraffe eats beings among the treetops."],
+    "Pitbull: Angel":[6,24,3,6,6,40, "\"God gives his tastiest children to the hungriest of pitbulls.\" Beware of this \"friendly\" dog."],
+    "Stick With Legs":[8,1,9,2,2,38, "It's a stick, but with legs... Use your imagination. Pick it up."],
+    "Troll":[21,24,4,18,5,75, "This large and unwiedly beast sits dormant underneath shelter until provoked otherwise. DO NOT WAKE."],
+    "Thief":[8,5,2,3,4,32, "A pickpocketer of towns and populated areas may steal your belongings without you realising. When confronted, may be strapped."],
+    "Ginger":[15,14,4,10,2,50, "A freckeled and pasty skinned beast, the ginger is a creature grown from roots that later sprouts from the ground to begin its life."],
+    "Desert Crab":[12,4,2,14,13,45, "Crab, but in the desert."],
+    "Unholy Spyder":[2,4,4,2,2,14, "This 8 legged spyder is often confused with the 8-legged Ant, except God hates this one."]
     }
 
 bosses={
-    "Gilgamesh the Banished":[38,22,6,22,12,100, "Gilgamesh the Banished, a betrayed ruler of a mighty kingdom within the valley of Tholyr. Betrayed by his council of trusted Whal-Marth Artisans, Gilgamesh had been planned on storming an orphanage."], 
-    "Unsalted Butterfly":[42,10,32,8,22,100, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
+    "Gilgamesh the Banished":[38,22,6,22,12,125, "Gilgamesh the Banished, a betrayed ruler of a mighty kingdom within the valley of Tholyr. Betrayed by his council of trusted Whal-Marth Artisans, Gilgamesh had been planned on storming an orphanage."], 
+    "Unsalted Butterfly":[42,10,32,8,22,140, "A large winged beast with the power to destroy the 9 realms, left unsalted by the Amish butter churner, and now weaker than imagined. Beware."],
     "Hellbender":[25,12,20,14,16,100, "A slimy and futile creature with capablities of bending flames towards it's enemies. Ironically, the salamander is only found within large water sources."],
-    "Bartholomew the Fell":[52,28,12,34,10,100, "A fallen paladin, Bartholomew the Fell was cast down by the archangels in response to his crippling alcoholism."],
-    "Count Borislav IV":[30,10,20,15,20,100, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
+    "Bartholomew the Fell":[52,28,12,34,10,165, "A fallen paladin, Bartholomew the Fell was cast down by the archangels in response to his crippling alcoholism."],
+    "Count Borislav IV":[30,10,20,15,20,115, "Count Borislav IV killed his brother in an attempt to usurp the throne. When he was caught and tried for murder and treason, Borislav fled, and learned the dark arts."]
     }
 
 
@@ -100,7 +100,7 @@ def battle(foe_list):
                     break
 
                 elif action.title()=="Potion":
-                    use_potion()
+                    hp=use_potion(hp)
                     break
                 
                 elif action.title()=="Retreat":
@@ -165,13 +165,13 @@ def open_inventory():
     fp.f_print("Current weapon equipped: "+equip_weapon[0])
     fp.f_print("Armor owned:")
     for item in player_armors:
-        print(item[0])
+        fp.f_print(item[0])
     fp.f_print("Weapons owned:")
     for item in player_weapons:
-        print(item[0])
+        fp.f_print(item[0])
     fp.f_print("Potions owned:")
     for item in player_potions:
-        print(item[0])
+        fp.f_print(item[0])
     fp.f_print("Select an action: Back, Unequip Armor, Unequip Weapon, Equip Armor, Equip Weapon")
     action=input("").title()
 
@@ -228,15 +228,16 @@ def open_inventory():
             fp.f_print("Already wielding weapon")
 
 
-def use_potion():
-    global current_hp
-    fp.f_print("Select a potion to use")
+def use_potion(hp):
+    fp.f_print("Select a potion to use:")
+    for item in player_potions:
+        fp.f_print(item[0])
     selection=input("").title()
     p_potions_names=[names[0] for names in player_potions]
     if selection in p_potions_names:
-        current_hp+=potions_bank[selection]
-        if current_hp>base_hp:
-            current_hp=current_hp
+        hp+=potions_bank[selection]
+        if hp>base_hp:
+            hp=base_hp
         for item in player_potions:
                     if item[0]==selection:
                         player_potions.remove(item)
@@ -244,6 +245,7 @@ def use_potion():
         fp.f_print("Used "+selection)
     else:
         fp.f_print("Invalid input")
+    return hp
 
 def roll_loot():
     loot_roll=random.choice(("p","p","p","w","a"))
@@ -312,12 +314,12 @@ while True:
     elif action.title()=="Inventory":
         open_inventory()
     elif action.title()=="Potion":
-        use_potion()
+        current_hp=use_potion()
     else:
         print("Invalid input")
     
     #Level up
-    if player_exp==player_lvl*100:
+    if player_exp>=player_lvl*100:
         player_exp=0
         player_lvl+=1
         #Redo stats
